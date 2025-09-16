@@ -1,5 +1,6 @@
 from datetime import time
 
+
 def test_dark_theme_by_time():
     """
     Протестируйте правильность переключения темной темы на сайте в зависимости от времени
@@ -34,7 +35,7 @@ def test_dark_theme_by_time_and_user_choice():
             is_dark_theme = False
         else:
             is_dark_theme = False
-    if dark_theme_enabled_by_user:
+    elif dark_theme_enabled_by_user:
         is_dark_theme = True
     assert is_dark_theme is True
 
