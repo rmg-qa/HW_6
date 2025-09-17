@@ -1,6 +1,7 @@
 from datetime import time
 
 
+
 def test_dark_theme_by_time():
     """
     Протестируйте правильность переключения темной темы на сайте в зависимости от времени
@@ -8,7 +9,7 @@ def test_dark_theme_by_time():
     current_time = time(hour=23)
     # TODO переключите темную тему в зависимости от времени суток (с 22 до 6 часов утра - ночь)
     is_dark_theme = None
-    if time(22) <= current_time or current_time <= time(6):
+    if time(22) <= current_time or current_time < time(6):
         is_dark_theme = True
     else:
         is_dark_theme = False
@@ -23,20 +24,19 @@ def test_dark_theme_by_time_and_user_choice():
     dark_theme_enabled_by_user = False - Темная тема выключена
     dark_theme_enabled_by_user = None - Пользователь не сделал выбор (используется переключение по времени системы)
     """
-    current_time = time(hour=16)
-    dark_theme_enabled_by_user = True
+    current_time = time(hour=23)
+    dark_theme_enabled_by_user = None
     # TODO переключите темную тему в зависимости от времени суток,
     #  но учтите что темная тема может быть включена вручную
     is_dark_theme = None
-    if dark_theme_enabled_by_user == False or dark_theme_enabled_by_user is None:
-        if time(22) <= current_time or current_time <= time(6) and dark_theme_enabled_by_user is None:
-            is_dark_theme = True
-        elif time(22) > current_time > time(6) and dark_theme_enabled_by_user is None:
-            is_dark_theme = False
-        else:
-            is_dark_theme = False
-    elif dark_theme_enabled_by_user:
+    if dark_theme_enabled_by_user:
         is_dark_theme = True
+    elif not dark_theme_enabled_by_user and dark_theme_enabled_by_user is not None:
+        is_dark_theme = False
+    elif time(22) <= current_time or current_time < time(6) and dark_theme_enabled_by_user is None:
+        is_dark_theme = True
+    else:
+        is_dark_theme = False
     assert is_dark_theme is True
 
 
@@ -87,6 +87,12 @@ def test_find_suitable_user():
 # "Open Browser [Chrome]"
 
 
+def function_for_print(name_func, *args):
+    correct_name_func = f'{name_func.__name__.replace('_', ' ').title()} [{','.join(args).replace(',', ', ')}]'
+    print(correct_name_func)
+    return correct_name_func
+
+
 def test_readable_function():
     open_browser(browser_name="Chrome")
     go_to_companyname_homepage(page_url="https://companyname.com")
@@ -94,18 +100,15 @@ def test_readable_function():
 
 
 def open_browser(browser_name):
-    actual_result = None
-    actual_result = open_browser.__name__.replace('_', ' ').title() + f' [{browser_name}]'
+    actual_result = function_for_print(open_browser, browser_name)
     assert actual_result == "Open Browser [Chrome]"
 
 
 def go_to_companyname_homepage(page_url):
-    actual_result = None
-    actual_result = go_to_companyname_homepage.__name__.replace('_', ' ').title() + f' [{page_url}]'
+    actual_result = function_for_print(go_to_companyname_homepage, page_url)
     assert actual_result == "Go To Companyname Homepage [https://companyname.com]"
 
 
 def find_registration_button_on_login_page(page_url, button_text):
-    actual_result = None
-    actual_result = find_registration_button_on_login_page.__name__.replace("_", ' ').title() +f' [{page_url}, {button_text}]'
+    actual_result = function_for_print(find_registration_button_on_login_page, page_url, button_text)
     assert actual_result == "Find Registration Button On Login Page [https://companyname.com/login, Register]"
